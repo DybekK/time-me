@@ -1,0 +1,33 @@
+version: '3'
+services:
+    database:
+        image: postgres
+        ports:
+            - "5432:5432"
+        env_file:
+            - ./.env.dev
+        volumes:
+            - database-dev:/var/lib/postgresql/data
+        healthcheck:
+            test: "exit 0"
+        networks:
+            - apps-network
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8080:8080"
+        networks:
+            - apps-network
+        depends_on:
+            database:
+                condition: service_healthy
+
+networks:
+    apps-network:
+        driver: bridge
+
+volumes:
+    database-dev:
+        driver: local
