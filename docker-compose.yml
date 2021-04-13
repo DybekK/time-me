@@ -24,6 +24,16 @@ services:
             database:
                 condition: service_healthy
 
+    keycloak:
+        image: jboss/keycloak
+        env_file:
+            - ./.env.dev
+        ports:
+            - "8180:8080"
+        depends_on:
+            database:
+                condition: service_healthy
+
 networks:
     apps-network:
         driver: bridge
