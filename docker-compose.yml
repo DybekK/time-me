@@ -2,6 +2,7 @@ version: '3'
 services:
     database:
         image: postgres
+        restart: always
         ports:
             - "5432:5432"
         env_file:
@@ -12,6 +13,20 @@ services:
             test: "exit 0"
         networks:
             - apps-network
+
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        env_file:
+            - ./.env.dev
+        ports:
+            - "5050:80"
+        networks:
+            - apps-network
+        depends_on:
+            database:
+                condition: service_healthy
+
     backend:
         build:
             context: .
