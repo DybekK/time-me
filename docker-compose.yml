@@ -43,8 +43,12 @@ services:
         image: jboss/keycloak
         env_file:
             - ./.env.dev
+        volumes:
+            - keycloak-dev:/opt/jboss/keycloak/standalone/data
         ports:
             - "8180:8080"
+        networks:
+            - apps-network
         depends_on:
             database:
                 condition: service_healthy
@@ -55,4 +59,6 @@ networks:
 
 volumes:
     database-dev:
+        driver: local
+    keycloak-dev:
         driver: local
