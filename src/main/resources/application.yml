@@ -1,0 +1,27 @@
+spring:
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        properties:
+            hibernate:
+            jdbc:
+                lob:
+                    non_contextual_creation: true
+        hibernate:
+            ddl-auto: none
+
+    datasource:
+        initialization-mode: always
+        platform: postgres
+        url: jdbc:postgresql://database:5432/testdb
+        username: user
+        password: password
+
+keycloak:
+    realm: TimeMeKeycloak
+    auth-server-url: http://keycloak:8080/auth
+    credentials:
+            secret: f5bc7faf-ba4d-4eaa-96bd-f03376885b37
+    ssl-required: external
+    resource: time-me
+    use-resource-role-mappings: true
+    bearer-only: true
