@@ -14,13 +14,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Repository
-public class UserRepository {
+public class UserRepository implements CustomRepository<User, UUID> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    @Override
     public User find(UUID id) {
         final String sql = "SELECT * FROM user_account WHERE id = :id";
         SqlParameterSource param = new MapSqlParameterSource()
@@ -34,12 +34,13 @@ public class UserRepository {
                 .addValue("id", id);
         return jdbcTemplate.queryForObject(sql, param, new UserRowMapper());
     }
-
+    @Override
     public List<User> findAll() {
         final String sql = "SELECT * FROM user_account";
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
+    @Override
     public User create(User user) {
         final String sql = "INSERT INTO user_account (external_id, username) VALUES (:externalId, :username)";
         KeyHolder holder = new GeneratedKeyHolder();
@@ -50,5 +51,25 @@ public class UserRepository {
         UUID id = (UUID) Objects.requireNonNull(holder.getKeys()).get("id");
         user.setId(id);
         return user;
+    }
+
+    @Override
+    public User update(User user) {
+        final String sql = "UPDATE user_account SET externalId = :externalId, username = :username, email = :email WHERE id = :id";
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("externalId", user.getExternalId())
+                .addValue("username", user.getUsername())
+                .addValue("email", user.getEmail())
+                .addValue("id", user.getId());
+        jdbcTemplate.update(sql, param);
+        return user;
+    }
+
+    @Override
+    public void delete(User user) {
+        final String sql = "DELETE FROM user_account WHERE id = :id";
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("id", user.getId());
+        jdbcTemplate.update(sql, param);
     }
 }
