@@ -6,7 +6,7 @@ services:
         ports:
             - "5432:5432"
         env_file:
-            - ./.env.dev
+            - ./src/main/resources/.env
         volumes:
             - database-dev:/var/lib/postgresql/data
         healthcheck:
@@ -18,7 +18,7 @@ services:
         image: dpage/pgadmin4
         restart: always
         env_file:
-            - ./.env.dev
+            - ./src/main/resources/.env
         ports:
             - "5050:80"
         networks:
@@ -42,7 +42,7 @@ services:
     keycloak:
         image: jboss/keycloak
         env_file:
-            - ./.env.dev
+            - ./src/main/resources/.env
         volumes:
             - keycloak-dev:/opt/jboss/keycloak/standalone/data
         ports:
