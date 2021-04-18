@@ -1,4 +1,4 @@
-package com.dybek.timeme.exception;
+package com.dybek.timeme.exception.handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

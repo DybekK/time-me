@@ -1,4 +1,4 @@
-package com.dybek.timeme.exception;
+package com.dybek.timeme.exception.handler;
 
 import lombok.Getter;
 import lombok.Setter;
