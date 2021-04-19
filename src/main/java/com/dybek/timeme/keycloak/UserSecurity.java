@@ -1,10 +1,9 @@
-package com.dybek.timeme.security;
+package com.dybek.timeme.keycloak;
 
-import com.dybek.timeme.datasource.entity.User;
-import com.dybek.timeme.datasource.repository.UserRepository;
 import com.dybek.timeme.exception.SecurityContextUserNotFoundException;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.representations.AccessToken;
+import org.keycloak.representations.account.UserRepresentation;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,13 @@ import java.util.UUID;
 
 @Service
 public class UserSecurity {
-    private final UserRepository userRepository;
+    private final KeycloakService keycloakService;
 
-    public UserSecurity(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserSecurity(KeycloakService keycloakService) {
+        this.keycloakService = keycloakService;
     }
 
-    public User getLoggedUser() throws SecurityContextUserNotFoundException {
+    public UserRepresentation getLoggedUser() throws SecurityContextUserNotFoundException {
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
         return Optional.ofNullable(securityContext.getAuthentication())
@@ -28,7 +27,7 @@ public class UserSecurity {
                     if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
                         KeycloakPrincipal<?> principal = (KeycloakPrincipal<?>) authentication.getPrincipal();
                         Optional<AccessToken> accessToken = Optional.ofNullable(principal.getKeycloakSecurityContext().getToken());
-                        return accessToken.map(token -> userRepository.findByExternalId(UUID.fromString(token.getSubject())));
+                        return accessToken.map(token -> keycloakService.getUser(UUID.fromString(token.getSubject())));
                     }
                     return Optional.empty();
                 })
