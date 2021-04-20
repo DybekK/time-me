@@ -3,7 +3,7 @@ package com.dybek.timeme.keycloak;
 import com.dybek.timeme.exception.SecurityContextUserNotFoundException;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.representations.AccessToken;
-import org.keycloak.representations.account.UserRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @Service
 public class UserSecurity {
-    private final KeycloakService keycloakService;
+    private final KeycloakUserRepository keycloakUserRepository;
 
-    public UserSecurity(KeycloakService keycloakService) {
-        this.keycloakService = keycloakService;
+    public UserSecurity(KeycloakUserRepository keycloakUserRepository) {
+        this.keycloakUserRepository = keycloakUserRepository;
     }
 
     public UserRepresentation getLoggedUser() throws SecurityContextUserNotFoundException {
@@ -27,7 +27,7 @@ public class UserSecurity {
                     if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
                         KeycloakPrincipal<?> principal = (KeycloakPrincipal<?>) authentication.getPrincipal();
                         Optional<AccessToken> accessToken = Optional.ofNullable(principal.getKeycloakSecurityContext().getToken());
-                        return accessToken.map(token -> keycloakService.getUser(UUID.fromString(token.getSubject())));
+                        return accessToken.map(token -> keycloakUserRepository.find(UUID.fromString(token.getSubject())));
                     }
                     return Optional.empty();
                 })

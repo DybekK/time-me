@@ -1,4 +1,4 @@
-package com.dybek.timeme.security;
+package com.dybek.timeme.keycloak;
 
 public enum WorkspaceRole {
     WRITE,

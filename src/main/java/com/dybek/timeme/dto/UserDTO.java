@@ -5,20 +5,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @ToString
 public class UserDTO {
-    private UUID id;
-    private UUID externalId;
-
-    @NotEmpty
+    @NotNull
     private String username;
 
-    @NotEmpty
+    @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    @NotNull
     @Email
     private String email;
 }
