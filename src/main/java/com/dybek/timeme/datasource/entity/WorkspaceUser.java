@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @ToString
 //workspace_user
-public class WorkspaceUser {
+public class WorkspaceUser implements Model {
     private UUID id;
     private String nickname;
     private Set<WorkspaceRole> roles;
