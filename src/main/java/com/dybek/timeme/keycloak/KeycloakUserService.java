@@ -14,10 +14,10 @@ import java.util.UUID;
 
 @Service
 public class KeycloakUserService {
-    private final KeycloakUserRepository keycloakUserRepository;
+    private final KeycloakUserProvider keycloakUserProvider;
 
-    public KeycloakUserService(KeycloakUserRepository keycloakUserRepository) {
-        this.keycloakUserRepository = keycloakUserRepository;
+    public KeycloakUserService(KeycloakUserProvider keycloakUserProvider) {
+        this.keycloakUserProvider = keycloakUserProvider;
     }
 
     public UserRepresentation getLoggedUser() throws SecurityContextUserNotFoundException {
@@ -27,7 +27,7 @@ public class KeycloakUserService {
                     if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
                         KeycloakPrincipal<?> principal = (KeycloakPrincipal<?>) authentication.getPrincipal();
                         Optional<AccessToken> accessToken = Optional.ofNullable(principal.getKeycloakSecurityContext().getToken());
-                        return accessToken.map(token -> keycloakUserRepository.find(UUID.fromString(token.getSubject())));
+                        return accessToken.map(token -> keycloakUserProvider.find(UUID.fromString(token.getSubject())));
                     }
                     return Optional.empty();
                 })
@@ -35,10 +35,10 @@ public class KeycloakUserService {
     }
 
     public UserRepresentation getUser(UUID id) {
-        return keycloakUserRepository.find(id);
+        return keycloakUserProvider.find(id);
     }
 
     public Response createUser(UserRepresentation userRepresentation) {
-        return keycloakUserRepository.create(userRepresentation);
+        return keycloakUserProvider.create(userRepresentation);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class WorkspaceUser implements Model {
     private UUID id;
     private String nickname;
-    private Set<WorkspaceRole> roles;
+    private Set<WorkspaceRole> roles = new HashSet<>();
     private UUID userId;
     private UUID workspaceId;
 

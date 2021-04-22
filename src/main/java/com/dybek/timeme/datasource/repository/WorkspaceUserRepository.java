@@ -1,7 +1,7 @@
 package com.dybek.timeme.datasource.repository;
 
 import com.dybek.timeme.datasource.entity.WorkspaceUser;
-import com.dybek.timeme.datasource.helper.ArraySqlValue;
+import com.dybek.timeme.datasource.repository.jdbc.JdbcRepository;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,11 +14,9 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Repository
-public class WorkspaceUserRepository implements CustomRepository<WorkspaceUser, UUID> {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
-
-    public WorkspaceUserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+public class WorkspaceUserRepository extends JdbcRepository<WorkspaceUser, UUID> {
+    protected WorkspaceUserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
     }
 
     @Override
@@ -33,11 +31,12 @@ public class WorkspaceUserRepository implements CustomRepository<WorkspaceUser, 
 
     @Override
     public WorkspaceUser create(WorkspaceUser workspaceUser) {
-        final String sql = "INSERT INTO workspace_user (nickname, roles) VALUES (:nickname, :roles)";
+        final String sql = "INSERT INTO workspace_user (nickname, user_id, workspace_id) VALUES (:nickname, :userId, :workspaceId)";
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("nickname", workspaceUser.getNickname())
-                .addValue("roles", ArraySqlValue.create(workspaceUser.getRoles().toArray()));
+                .addValue("userId", workspaceUser.getUserId())
+                .addValue("workspaceId", workspaceUser.getWorkspaceId());
         jdbcTemplate.update(sql, param, holder);
         UUID id = (UUID) Objects.requireNonNull(holder.getKeys()).get("id");
         workspaceUser.setId(id);

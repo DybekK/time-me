@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserRepresentation> registerUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         try {
             return ResponseEntity.ok(userService.create(userDTO));
         } catch (KeycloakUserCreationFailedException e) {

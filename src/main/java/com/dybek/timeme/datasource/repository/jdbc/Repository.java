@@ -1,10 +1,10 @@
-package com.dybek.timeme.datasource.repository;
+package com.dybek.timeme.datasource.repository.jdbc;
 
 import com.dybek.timeme.datasource.entity.Model;
 
 import java.util.List;
 
-public interface CustomRepository<T extends Model, ID> {
+public interface Repository<T extends Model, ID> {
     public T find(ID id);
     public List<T> findAll();
     public <S extends T> T create(S entity);

@@ -7,9 +7,9 @@ import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Repository
-public class KeycloakUserRepository {
+public class KeycloakUserProvider {
     private final KeycloakCustomBuilder keycloakBuilder;
-    public KeycloakUserRepository(KeycloakCustomBuilder keycloakBuilder) {
+    public KeycloakUserProvider(KeycloakCustomBuilder keycloakBuilder) {
         this.keycloakBuilder = keycloakBuilder;
     }
 
