@@ -163,10 +163,9 @@
 						</goals>
 						<configuration>
 							<generator>
-								<strategy>
-									<matchers>
-									</matchers>
-								</strategy>
+								<generate>
+									<pojos>true</pojos>
+								</generate>
 								<database>
 									<name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
 									<properties>

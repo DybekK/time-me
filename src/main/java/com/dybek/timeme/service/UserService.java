@@ -67,7 +67,8 @@ public class UserService {
         WorkspaceUserRecord workspaceUser = dsl.newRecord(WORKSPACE_USER);
         workspaceUser.setUserId(userId);
         workspaceUser.setWorkspaceId(workspace.getId());
-        workspace.store();
+        workspaceUser.setNickname(userDTO.getUsername());
+        workspaceUser.store();
 
         return "User has been created";
     }

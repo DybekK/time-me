@@ -63,7 +63,7 @@ public class RestResponseBuilder {
         RestResponse response = new RestResponse();
         response.setStatus(status);
         response.setError(error);
-        response.setMessage(message);
+        response.setMessage(message.replace("\"", ""));
         response.setPath(path);
         return response;
     }

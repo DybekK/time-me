@@ -1,4 +1,6 @@
 /* [jooq ignore start] */
+CREATE SCHEMA IF NOT EXISTS public;
+SET SCHEMA 'public';
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 /* [jooq ignore stop] */
 
@@ -32,4 +34,3 @@ CREATE TABLE IF NOT EXISTS task
     FOREIGN KEY (workspace_id) REFERENCES workspace(id),
     PRIMARY KEY (id)
 );
-

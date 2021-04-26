@@ -1,6 +1,6 @@
 //package com.dybek.timeme.datasource.repository;
 //
-//import com.dybek.timeme.datasource.domain.tables.Workspace;
+//import com.dybek.timeme.datasource.domain.jooq.tables.Workspace;
 //import com.dybek.timeme.datasource.entity.Workspace;
 //import com.dybek.timeme.datasource.helper.ArraySqlValue;
 //import com.dybek.timeme.datasource.repository.jdbc.JdbcRepository;

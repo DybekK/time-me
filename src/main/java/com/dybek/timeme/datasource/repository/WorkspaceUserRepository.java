@@ -1,6 +1,6 @@
 //package com.dybek.timeme.datasource.repository;
 //
-//import com.dybek.timeme.datasource.domain.tables.WorkspaceUser;
+//import com.dybek.timeme.datasource.domain.jooq.tables.WorkspaceUser;
 //import com.dybek.timeme.datasource.repository.jdbc.JdbcRepository;
 //import org.jooq.DSLContext;
 //import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -9,7 +9,7 @@
 //import org.springframework.jdbc.support.GeneratedKeyHolder;
 //import org.springframework.jdbc.support.KeyHolder;
 //import org.springframework.stereotype.Repository;
-//import static com.dybek.timeme.datasource.domain.Tables.*;
+//import static com.dybek.timeme.datasource.domain.jooq.Tables.*;
 //import static org.jooq.impl.DSL.*;
 //
 //import java.util.List;

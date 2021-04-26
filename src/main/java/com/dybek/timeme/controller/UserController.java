@@ -1,10 +1,13 @@
 package com.dybek.timeme.controller;
 
+import com.dybek.timeme.datasource.domain.tables.pojos.WorkspaceUser;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
 import com.dybek.timeme.keycloak.KeycloakUserService;
 import com.dybek.timeme.service.UserService;
+import org.jooq.DSLContext;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
+import static com.dybek.timeme.datasource.domain.Tables.*;
+
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,6 +25,8 @@ import java.util.UUID;
 public class UserController {
     private final KeycloakUserService keycloakUserService;
     private final UserService userService;
+    @Autowired
+    private DSLContext dsl;
 
     public UserController(KeycloakUserService keycloakUserService, UserService userService) {
         this.keycloakUserService = keycloakUserService;
@@ -32,6 +40,12 @@ public class UserController {
         } catch (KeycloakUserCreationFailedException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
         }
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<WorkspaceUser>> getAll() {
+        var workspaceUsers = dsl.select().from(WORKSPACE_USER).fetchInto(WorkspaceUser.class);
+        return ResponseEntity.ok(workspaceUsers);
     }
 
     @GetMapping("/get/{id}")
