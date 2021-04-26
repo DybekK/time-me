@@ -34,11 +34,4 @@ public class KeycloakCustomBuilder {
     public RealmResource realm() {
         return keycloakInstance.realm(realm);
     }
-
-//    public String users() {
-//        Map<String, String> stringValues = new HashMap<>();
-//        stringValues.put("keycloakServerUrl", keycloakServerUrl);
-//        stringValues.put("realm", realm);
-//        return new StringSubstitutor(stringValues).replace("${keycloakServerUrl}/admin/realms/${realm}/users/");
-//    }
 }

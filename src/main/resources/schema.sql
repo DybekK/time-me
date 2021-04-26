@@ -1,14 +1,18 @@
+/* [jooq ignore start] */
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+/* [jooq ignore stop] */
 
 CREATE TABLE IF NOT EXISTS workspace
 (
-    id uuid DEFAULT uuid_generate_v4(),
+    id uuid
+        /* [jooq ignore start] */ DEFAULT uuid_generate_v4() /* [jooq ignore stop] */,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS workspace_user
 (
-    id uuid DEFAULT uuid_generate_v4(),
+    id uuid
+        /* [jooq ignore start] */ DEFAULT uuid_generate_v4() /* [jooq ignore stop] */,
     nickname varchar NOT NULL,
     roles varchar[],
     user_id uuid NOT NULL,
@@ -20,10 +24,12 @@ CREATE TABLE IF NOT EXISTS workspace_user
 
 CREATE TABLE IF NOT EXISTS task
 (
-    id uuid DEFAULT uuid_generate_v4(),
+    id uuid
+        /* [jooq ignore start] */ DEFAULT uuid_generate_v4() /* [jooq ignore stop] */,
     workspace_user_id uuid NOT NULL,
     workspace_id uuid NOT NULL,
     FOREIGN KEY (workspace_user_id) REFERENCES workspace_user(id),
     FOREIGN KEY (workspace_id) REFERENCES workspace(id),
     PRIMARY KEY (id)
 );
+

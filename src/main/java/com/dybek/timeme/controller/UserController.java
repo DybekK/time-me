@@ -4,7 +4,6 @@ import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
 import com.dybek.timeme.keycloak.KeycloakUserService;
 import com.dybek.timeme.service.UserService;
-import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.UUID;
 
 @RestController

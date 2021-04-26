@@ -1,12 +1,11 @@
 package com.dybek.timeme.service;
 
-import com.dybek.timeme.datasource.entity.Workspace;
-import com.dybek.timeme.datasource.entity.WorkspaceUser;
-import com.dybek.timeme.datasource.repository.WorkspaceRepository;
-import com.dybek.timeme.datasource.repository.WorkspaceUserRepository;
+import com.dybek.timeme.datasource.domain.tables.records.WorkspaceRecord;
+import com.dybek.timeme.datasource.domain.tables.records.WorkspaceUserRecord;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
 import com.dybek.timeme.keycloak.KeycloakUserService;
+import org.jooq.DSLContext;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
@@ -19,16 +18,16 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.UUID;
 
+import static com.dybek.timeme.datasource.domain.Tables.*;
+
 @Service
 public class UserService {
     private final KeycloakUserService keycloakUserService;
-    private final WorkspaceUserRepository workspaceUserRepository;
-    private final WorkspaceRepository workspaceRepository;
+    private final DSLContext dsl;
 
-    public UserService(KeycloakUserService keycloakUserService, WorkspaceUserRepository workspaceUserRepository, WorkspaceRepository workspaceRepository) {
+    public UserService(KeycloakUserService keycloakUserService, DSLContext dsl) {
         this.keycloakUserService = keycloakUserService;
-        this.workspaceUserRepository = workspaceUserRepository;
-        this.workspaceRepository = workspaceRepository;
+        this.dsl = dsl;
     }
 
     private UUID getUserIdFromResponse(String uri) throws URISyntaxException {
@@ -62,14 +61,13 @@ public class UserService {
         // gets id from newly created user, id is placed in headers
         UUID userId = getUserIdFromResponse(response.getStringHeaders().getFirst("Location"));
 
-        Workspace workspace = new Workspace();
-        workspaceRepository.create(workspace);
+        WorkspaceRecord workspace = dsl.newRecord(WORKSPACE);
+        workspace.store();
 
-        WorkspaceUser workspaceUser = new WorkspaceUser();
-        workspaceUser.setWorkspaceId(workspace.getId());
+        WorkspaceUserRecord workspaceUser = dsl.newRecord(WORKSPACE_USER);
         workspaceUser.setUserId(userId);
-        workspaceUser.setNickname(user.getUsername());
-        workspaceUserRepository.create(workspaceUser);
+        workspaceUser.setWorkspaceId(workspace.getId());
+        workspace.store();
 
         return "User has been created";
     }
