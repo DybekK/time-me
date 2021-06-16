@@ -2,6 +2,7 @@ package com.dybek.timeme.IT;
 
 import com.dybek.timeme.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,6 +16,42 @@ public class UserControllerTest extends AbstractIT {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @AfterEach
+    public void setUp() {
+        clearKeycloakUsers();
+    }
+
+    @Test
+    void whenUserRegisterShouldReturn200() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("test@email.com");
+        userDTO.setUsername("test");
+        userDTO.setPassword("test");
+
+        mockMvc.perform(post("/api/user/register")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(userDTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void whenUserRegisterWithSameUsernameShouldReturn503() throws Exception {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail("test@email.com");
+        userDTO.setUsername("test");
+        userDTO.setPassword("test");
+
+        mockMvc.perform(post("/api/user/register")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(userDTO)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/api/user/register")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(userDTO)))
+                .andExpect(status().isServiceUnavailable());
+    }
 
     @Test
     void whenUserRegisterRequestIsNotValidShouldReturn400() throws Exception {

@@ -23,10 +23,10 @@ public class KeycloakCustomBuilder {
         this.realm = realm;
         keycloakInstance = KeycloakBuilder.builder()
                 .serverUrl(keycloakServerUrl)
-                .username("spring-admin")
+                .username("admin")
                 .password("passwd")
-                .realm(realm)
-                .clientId(resource)
+                .realm("master")
+                .clientId("admin-cli")
                 .clientSecret(secret)
                 .build();
     }
