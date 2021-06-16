@@ -1,0 +1,26 @@
+security:
+    ignored: /**
+server:
+    error:
+        include-message: always
+spring:
+    datasource:
+        driverClassName: org.postgresql.Driver
+        initialization-mode: always
+        platform: postgres
+        url: jdbc:postgresql://database:5432/${env.POSTGRES_DB}
+        schema: classpath:/schema.sql
+        username: ${env.POSTGRES_USER}
+        password: ${env.POSTGRES_PASSWORD}
+    jooq:
+        sql-dialect: POSTGRES
+
+keycloak:
+    realm: TimeMeKeycloak
+    auth-server-url: http://keycloak:8080/auth
+    credentials:
+        secret: ${env.KEYCLOAK_SPRING_SECRET}
+    ssl-required: external
+    resource: time-me
+    use-resource-role-mappings: true
+    bearer-only: true

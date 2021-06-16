@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -14,13 +15,13 @@ public class UserDTO {
     @NotNull
     private String username;
 
-    @NotNull
-    private String firstName;
+//    @NotNull
+//    private String firstname;
+//
+//    @NotNull
+//    private String lastname;
 
-    @NotNull
-    private String lastName;
-
-    @NotNull
+    @NotEmpty
     @Email
     private String email;
 
