@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -58,9 +57,7 @@ public abstract class AbstractIT {
                 .build();
 
         RealmResource realm = keycloak.realm(env.getProperty("keycloak.realm"));
-        realm.users().list().forEach(user -> {
-            realm.users().delete(user.getId());
-        });
+        realm.users().list().forEach(user -> realm.users().delete(user.getId()));
     }
 
     protected ResultSet performQuery(JdbcDatabaseContainer<?> container, String sql) throws SQLException {

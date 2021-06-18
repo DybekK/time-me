@@ -179,6 +179,7 @@
 							<generator>
 								<generate>
 									<pojos>true</pojos>
+									<daos>true</daos>
 								</generate>
 								<database>
 									<name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
@@ -198,7 +199,7 @@
 									</properties>
 								</database>
 								<target>
-									<packageName>com.dybek.timeme.datasource.domain</packageName>
+									<packageName>com.dybek.timeme.domain</packageName>
 									<directory>src/main/java</directory>
 								</target>
 							</generator>

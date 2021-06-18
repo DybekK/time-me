@@ -1,9 +1,10 @@
 package com.dybek.timeme.controller;
 
-import com.dybek.timeme.datasource.domain.tables.pojos.WorkspaceUser;
+import com.dybek.timeme.domain.tables.pojos.WorkspaceUser;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
-import com.dybek.timeme.keycloak.KeycloakUserService;
+import com.dybek.timeme.exception.SecurityContextUserNotFoundException;
+import com.dybek.timeme.service.KeycloakUserService;
 import com.dybek.timeme.service.UserService;
 import org.jooq.DSLContext;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -15,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import static com.dybek.timeme.datasource.domain.Tables.*;
+import static com.dybek.timeme.domain.Tables.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,11 @@ public class UserController {
     public ResponseEntity<List<WorkspaceUser>> getAll() {
         var workspaceUsers = dsl.select().from(WORKSPACE_USER).fetchInto(WorkspaceUser.class);
         return ResponseEntity.ok(workspaceUsers);
+    }
+
+    @GetMapping("/get-current")
+    public ResponseEntity<UserRepresentation> getCurrentUser() throws SecurityContextUserNotFoundException {
+        return ResponseEntity.ok(keycloakUserService.getLoggedUser());
     }
 
     @GetMapping("/get/{id}")

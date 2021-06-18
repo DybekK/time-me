@@ -1,10 +1,9 @@
 package com.dybek.timeme.service;
 
-import com.dybek.timeme.datasource.domain.tables.records.WorkspaceRecord;
-import com.dybek.timeme.datasource.domain.tables.records.WorkspaceUserRecord;
+import com.dybek.timeme.domain.tables.records.WorkspaceRecord;
+import com.dybek.timeme.domain.tables.records.WorkspaceUserRecord;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
-import com.dybek.timeme.keycloak.KeycloakUserService;
 import org.jooq.DSLContext;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -18,7 +17,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.UUID;
 
-import static com.dybek.timeme.datasource.domain.Tables.*;
+import static com.dybek.timeme.domain.Tables.*;
 
 @Service
 public class UserService {

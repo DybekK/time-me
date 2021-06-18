@@ -1,20 +1,19 @@
-package com.dybek.timeme.keycloak;
+package com.dybek.timeme.service;
 
-import org.springframework.stereotype.Repository;
 import org.keycloak.representations.idm.UserRepresentation;
-
+import org.springframework.stereotype.Service;
 import javax.ws.rs.core.Response;
 import java.util.*;
 
-@Repository
+@Service
 public class KeycloakUserProvider {
-    private final KeycloakCustomBuilder keycloakBuilder;
-    public KeycloakUserProvider(KeycloakCustomBuilder keycloakBuilder) {
-        this.keycloakBuilder = keycloakBuilder;
+    private final KeycloakInitializer keycloakInitializer;
+    public KeycloakUserProvider(KeycloakInitializer keycloakBuilder) {
+        this.keycloakInitializer = keycloakBuilder;
     }
 
     public UserRepresentation find(UUID id) {
-        return keycloakBuilder
+        return keycloakInitializer
                 .realm()
                 .users()
                 .get(id.toString())
@@ -22,7 +21,7 @@ public class KeycloakUserProvider {
     }
 
     public Response create(UserRepresentation user) {
-        return keycloakBuilder
+        return keycloakInitializer
                 .realm()
                 .users()
                 .create(user);

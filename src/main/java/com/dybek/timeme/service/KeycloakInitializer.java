@@ -1,4 +1,4 @@
-package com.dybek.timeme.keycloak;
+package com.dybek.timeme.service;
 
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class KeycloakCustomBuilder {
+public class KeycloakInitializer {
     private final Keycloak keycloakInstance;
     private final String realm;
 
     @Autowired
-    public KeycloakCustomBuilder(
+    public KeycloakInitializer(
             @Value("${keycloak.auth-server-url}") String keycloakServerUrl,
             @Value("${keycloak.realm}") String realm,
             @Value("${keycloak.resource}") String resource,
