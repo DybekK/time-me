@@ -1,4 +1,4 @@
-package com.dybek.timeme.service;
+package com.dybek.timeme.service.user;
 
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;

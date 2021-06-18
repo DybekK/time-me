@@ -1,4 +1,4 @@
-package com.dybek.timeme.service;
+package com.dybek.timeme.service.user;
 
 import com.dybek.timeme.exception.SecurityContextUserNotFoundException;
 import org.keycloak.KeycloakPrincipal;

@@ -1,10 +1,11 @@
-package com.dybek.timeme.service;
+package com.dybek.timeme.service.user;
 
-import com.dybek.timeme.domain.tables.records.WorkspaceRecord;
-import com.dybek.timeme.domain.tables.records.WorkspaceUserRecord;
+import com.dybek.timeme.domain.jooq.tables.pojos.Workspace;
+import com.dybek.timeme.domain.jooq.tables.pojos.WorkspaceUser;
+import com.dybek.timeme.domain.repository.WorkspaceRepository;
+import com.dybek.timeme.domain.repository.WorkspaceUserRepository;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
-import org.jooq.DSLContext;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
@@ -14,19 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-import static com.dybek.timeme.domain.Tables.*;
 
 @Service
 public class UserService {
     private final KeycloakUserService keycloakUserService;
-    private final DSLContext dsl;
+    private final WorkspaceUserRepository workspaceUserRepository;
+    private final WorkspaceRepository workspaceRepository;
 
-    public UserService(KeycloakUserService keycloakUserService, DSLContext dsl) {
+    public UserService
+    (
+        KeycloakUserService keycloakUserService,
+        WorkspaceRepository workspaceRepository,
+        WorkspaceUserRepository workspaceUserRepository
+    )
+    {
         this.keycloakUserService = keycloakUserService;
-        this.dsl = dsl;
+        this.workspaceRepository = workspaceRepository;
+        this.workspaceUserRepository = workspaceUserRepository;
     }
 
     private UUID getUserIdFromResponse(String uri) throws URISyntaxException {
@@ -36,7 +45,7 @@ public class UserService {
     }
 
     @Transactional
-    public String create(UserDTO userDTO) throws KeycloakUserCreationFailedException, URISyntaxException {
+    public UserRepresentation create(UserDTO userDTO) throws KeycloakUserCreationFailedException, URISyntaxException {
         // creates object for credentials of Keycloak user
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
@@ -46,6 +55,7 @@ public class UserService {
         // creates Keycloak user object and sets its credentials
         UserRepresentation user = new UserRepresentation();
         user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
         user.setEnabled(true);
         user.setCredentials(Collections.singletonList(credential));
 
@@ -60,16 +70,17 @@ public class UserService {
         // gets id from newly created user, id is placed in headers
         UUID userId = getUserIdFromResponse(response.getStringHeaders().getFirst("Location"));
 
-        WorkspaceRecord workspace = dsl.newRecord(WORKSPACE);
-        workspace.store();
+        Workspace workspace = new Workspace();
+        workspaceRepository.insert(workspace);
 
-        WorkspaceUserRecord workspaceUser = dsl.newRecord(WORKSPACE_USER);
+        WorkspaceUser workspaceUser = new WorkspaceUser();
         workspaceUser.setUserId(userId);
         workspaceUser.setWorkspaceId(workspace.getId());
         workspaceUser.setNickname(userDTO.getUsername());
-        workspaceUser.store();
+        workspaceUser.setRoles(new String[]{});
+        workspaceUserRepository.insert(workspaceUser);
 
-        return "User has been created";
+        return keycloakUserService.getUser(userId);
     }
 
 }

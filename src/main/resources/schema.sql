@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS workspace_user
 (
     id uuid
         /* [jooq ignore start] */ DEFAULT uuid_generate_v4() /* [jooq ignore stop] */,
-    nickname varchar NOT NULL,
-    roles varchar[],
+    nickname varchar,
+    roles varchar[] DEFAULT array[]::varchar[],
     user_id uuid NOT NULL,
     workspace_id uuid NOT NULL,
     FOREIGN KEY (workspace_id) REFERENCES workspace(id) ON DELETE CASCADE,
@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS task
 (
     id uuid
         /* [jooq ignore start] */ DEFAULT uuid_generate_v4() /* [jooq ignore stop] */,
+    title varchar NOT NULL,
     workspace_user_id uuid NOT NULL,
     workspace_id uuid NOT NULL,
     FOREIGN KEY (workspace_user_id) REFERENCES workspace_user(id),

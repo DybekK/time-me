@@ -1,11 +1,11 @@
 package com.dybek.timeme.controller;
 
-import com.dybek.timeme.domain.tables.pojos.WorkspaceUser;
+import com.dybek.timeme.domain.jooq.tables.pojos.WorkspaceUser;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
 import com.dybek.timeme.exception.SecurityContextUserNotFoundException;
-import com.dybek.timeme.service.KeycloakUserService;
-import com.dybek.timeme.service.UserService;
+import com.dybek.timeme.service.user.KeycloakUserService;
+import com.dybek.timeme.service.user.UserService;
 import org.jooq.DSLContext;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import static com.dybek.timeme.domain.Tables.*;
+import static com.dybek.timeme.domain.jooq.Tables.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+    public ResponseEntity<UserRepresentation> registerUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
         try {
             return ResponseEntity.ok(userService.create(userDTO));
         } catch (KeycloakUserCreationFailedException e) {

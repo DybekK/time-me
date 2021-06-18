@@ -1,4 +1,4 @@
-package com.dybek.timeme.service;
+package com.dybek.timeme.service.user;
 
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;

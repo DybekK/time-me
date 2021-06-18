@@ -3,20 +3,23 @@ package com.dybek.timeme.IT;
 import com.dybek.timeme.dto.UserDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
+
+import static com.dybek.timeme.domain.jooq.Tables.WORKSPACE_USER;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 public class UserControllerTest extends AbstractIT {
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private MockMvc mockMvc;
-
     @AfterEach
     public void setUp() {
         clearKeycloakUsers();
@@ -24,15 +27,31 @@ public class UserControllerTest extends AbstractIT {
 
     @Test
     void whenUserRegisterShouldReturn200() throws Exception {
+        // given
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail("test@email.com");
         userDTO.setUsername("test");
         userDTO.setPassword("test");
 
-        mockMvc.perform(post("/api/user/register")
+        // when
+        MvcResult result = mockMvc.perform(post("/api/user/register")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(userDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+
+        String body = result.getResponse().getContentAsString();
+        UserRepresentation keycloakUser = objectMapper.readValue(body, UserRepresentation.class);
+
+       var userId =  dsl.select(WORKSPACE_USER.USER_ID)
+                .from(WORKSPACE_USER)
+                .where(WORKSPACE_USER.USER_ID.equal(UUID.fromString(keycloakUser.getId())))
+                .fetchOne();
+
+       // then
+        assertEquals(userDTO.getEmail(), keycloakUser.getEmail());
+        assertEquals(keycloakUser.getId(), userId.get(WORKSPACE_USER.USER_ID).toString());
     }
 
     @Test

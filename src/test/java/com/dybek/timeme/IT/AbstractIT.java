@@ -1,11 +1,14 @@
 package com.dybek.timeme.IT;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
+import org.jooq.DSLContext;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
@@ -15,12 +18,14 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -32,8 +37,15 @@ import java.sql.Statement;
 @ContextConfiguration(initializers = AbstractIT.DockerPostgreDataSourceInitializer.class)
 @Testcontainers
 public abstract class AbstractIT {
-    public static Environment env;
-    public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:9.4");
+    protected static Environment env;
+    protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:13.3");
+    protected final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
+    protected DSLContext dsl;
 
     @Container
     public static KeycloakContainer keycloakContainer = new KeycloakContainer()
@@ -60,14 +72,9 @@ public abstract class AbstractIT {
         realm.users().list().forEach(user -> realm.users().delete(user.getId()));
     }
 
-    protected ResultSet performQuery(JdbcDatabaseContainer<?> container, String sql) throws SQLException {
-        DataSource ds = getDataSource(container);
-        Statement statement = ds.getConnection().createStatement();
-        statement.execute(sql);
-        ResultSet resultSet = statement.getResultSet();
-
-        resultSet.next();
-        return resultSet;
+    protected Connection getConnection() throws SQLException {
+        DataSource ds = getDataSource(postgreDBContainer);
+        return ds.getConnection();
     }
 
     protected DataSource getDataSource(JdbcDatabaseContainer<?> container) {

@@ -199,7 +199,7 @@
 									</properties>
 								</database>
 								<target>
-									<packageName>com.dybek.timeme.domain</packageName>
+									<packageName>com.dybek.timeme.domain.jooq</packageName>
 									<directory>src/main/java</directory>
 								</target>
 							</generator>
