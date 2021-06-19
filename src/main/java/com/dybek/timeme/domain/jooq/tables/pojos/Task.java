@@ -17,29 +17,29 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UUID   id;
-    private String title;
     private UUID   workspaceUserId;
     private UUID   workspaceId;
+    private String title;
 
     public Task() {}
 
     public Task(Task value) {
         this.id = value.id;
-        this.title = value.title;
         this.workspaceUserId = value.workspaceUserId;
         this.workspaceId = value.workspaceId;
+        this.title = value.title;
     }
 
     public Task(
         UUID   id,
-        String title,
         UUID   workspaceUserId,
-        UUID   workspaceId
+        UUID   workspaceId,
+        String title
     ) {
         this.id = id;
-        this.title = title;
         this.workspaceUserId = workspaceUserId;
         this.workspaceId = workspaceId;
+        this.title = title;
     }
 
     /**
@@ -54,20 +54,6 @@ public class Task implements Serializable {
      */
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    /**
-     * Getter for <code>task.title</code>.
-     */
-    public String getTitle() {
-        return this.title;
-    }
-
-    /**
-     * Setter for <code>task.title</code>.
-     */
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     /**
@@ -98,14 +84,28 @@ public class Task implements Serializable {
         this.workspaceId = workspaceId;
     }
 
+    /**
+     * Getter for <code>task.title</code>.
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Setter for <code>task.title</code>.
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Task (");
 
         sb.append(id);
-        sb.append(", ").append(title);
         sb.append(", ").append(workspaceUserId);
         sb.append(", ").append(workspaceId);
+        sb.append(", ").append(title);
 
         sb.append(")");
         return sb.toString();

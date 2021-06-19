@@ -1,16 +1,13 @@
 package com.dybek.timeme.IT;
 
 import com.dybek.timeme.dto.UserDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.*;
 
 import static com.dybek.timeme.domain.jooq.Tables.WORKSPACE_USER;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.UUID;
@@ -20,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 public class UserControllerTest extends AbstractIT {
-    @AfterEach
+    @BeforeEach
     public void setUp() {
         clearKeycloakUsers();
     }

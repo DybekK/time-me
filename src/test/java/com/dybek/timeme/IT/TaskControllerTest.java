@@ -3,15 +3,12 @@ package com.dybek.timeme.IT;
 import com.dybek.timeme.domain.jooq.tables.pojos.WorkspaceUser;
 import com.dybek.timeme.dto.TaskDTO;
 import com.dybek.timeme.dto.UserDTO;
-import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
 import com.dybek.timeme.service.user.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static com.dybek.timeme.domain.jooq.Tables.WORKSPACE_USER;

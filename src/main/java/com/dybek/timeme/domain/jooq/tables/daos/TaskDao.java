@@ -61,20 +61,6 @@ public class TaskDao extends DAOImpl<TaskRecord, com.dybek.timeme.domain.jooq.ta
     }
 
     /**
-     * Fetch records that have <code>title BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchRangeOfTitle(String lowerInclusive, String upperInclusive) {
-        return fetchRange(Task.TASK.TITLE, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>title IN (values)</code>
-     */
-    public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchByTitle(String... values) {
-        return fetch(Task.TASK.TITLE, values);
-    }
-
-    /**
      * Fetch records that have <code>workspace_user_id BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchRangeOfWorkspaceUserId(UUID lowerInclusive, UUID upperInclusive) {
@@ -100,5 +86,19 @@ public class TaskDao extends DAOImpl<TaskRecord, com.dybek.timeme.domain.jooq.ta
      */
     public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchByWorkspaceId(UUID... values) {
         return fetch(Task.TASK.WORKSPACE_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>title BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchRangeOfTitle(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Task.TASK.TITLE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>title IN (values)</code>
+     */
+    public List<com.dybek.timeme.domain.jooq.tables.pojos.Task> fetchByTitle(String... values) {
+        return fetch(Task.TASK.TITLE, values);
     }
 }

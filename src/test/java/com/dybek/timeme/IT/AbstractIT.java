@@ -9,7 +9,6 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,24 +20,20 @@ import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(initializers = AbstractIT.DockerPostgreDataSourceInitializer.class)
 @Testcontainers
 public abstract class AbstractIT {
     protected static Environment env;
-    protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:13.3");
+    protected static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:latest");
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -47,7 +42,6 @@ public abstract class AbstractIT {
     @Autowired
     protected DSLContext dsl;
 
-    @Container
     public static KeycloakContainer keycloakContainer = new KeycloakContainer()
             .withRealmImportFile("realm-export.json")
             .withAdminPassword("passwd")

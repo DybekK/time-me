@@ -56,7 +56,7 @@ public class WorkspaceUser extends TableImpl<WorkspaceUserRecord> {
     /**
      * The column <code>workspace_user.nickname</code>.
      */
-    public final TableField<WorkspaceUserRecord, String> NICKNAME = createField(DSL.name("nickname"), SQLDataType.VARCHAR(2147483647).nullable(false), this, "");
+    public final TableField<WorkspaceUserRecord, String> NICKNAME = createField(DSL.name("nickname"), SQLDataType.VARCHAR(2147483647), this, "");
 
     /**
      * The column <code>workspace_user.roles</code>.

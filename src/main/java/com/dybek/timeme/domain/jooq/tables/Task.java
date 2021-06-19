@@ -54,11 +54,6 @@ public class Task extends TableImpl<TaskRecord> {
     public final TableField<TaskRecord, UUID> ID = createField(DSL.name("id"), SQLDataType.UUID.nullable(false), this, "");
 
     /**
-     * The column <code>task.title</code>.
-     */
-    public final TableField<TaskRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(2147483647).nullable(false), this, "");
-
-    /**
      * The column <code>task.workspace_user_id</code>.
      */
     public final TableField<TaskRecord, UUID> WORKSPACE_USER_ID = createField(DSL.name("workspace_user_id"), SQLDataType.UUID.nullable(false), this, "");
@@ -67,6 +62,11 @@ public class Task extends TableImpl<TaskRecord> {
      * The column <code>task.workspace_id</code>.
      */
     public final TableField<TaskRecord, UUID> WORKSPACE_ID = createField(DSL.name("workspace_id"), SQLDataType.UUID.nullable(false), this, "");
+
+    /**
+     * The column <code>task.title</code>.
+     */
+    public final TableField<TaskRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(2147483647).nullable(false), this, "");
 
     private Task(Name alias, Table<TaskRecord> aliased) {
         this(alias, aliased, null);
@@ -169,7 +169,7 @@ public class Task extends TableImpl<TaskRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<UUID, String, UUID, UUID> fieldsRow() {
+    public Row4<UUID, UUID, UUID, String> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 }
