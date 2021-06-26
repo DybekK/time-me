@@ -11,8 +11,8 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public TaskService(TaskRepository taskDao) {
-        this.taskRepository = taskDao;
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public Task create(TaskDTO taskDTO) {
