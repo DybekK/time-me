@@ -15,8 +15,9 @@ public class WorkspaceManagementService {
         this.workspaceRepository = workspaceRepository;
     }
 
-    public void createWorkspace(WorkspaceDTO workspaceDTO) {
+    public Workspace createWorkspace(WorkspaceDTO workspaceDTO) {
         Workspace workspace = modelMapper.map(workspaceDTO, Workspace.class);
         workspaceRepository.insert(workspace);
+        return workspace;
     }
 }
