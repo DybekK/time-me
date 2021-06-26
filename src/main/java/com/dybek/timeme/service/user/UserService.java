@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -42,6 +43,10 @@ public class UserService {
         URI _uri = new URI(uri);
         String path = _uri.getPath();
         return UUID.fromString(path.substring(path.lastIndexOf('/') + 1));
+    }
+
+    public Optional<WorkspaceUser> getWorkspaceUser(UUID userId) {
+        return workspaceUserRepository.fetchByUserId(userId).stream().findFirst();
     }
 
     @Transactional

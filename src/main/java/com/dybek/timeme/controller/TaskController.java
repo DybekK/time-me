@@ -4,6 +4,8 @@ import com.dybek.timeme.domain.jooq.tables.pojos.Task;
 import com.dybek.timeme.dto.TaskDTO;
 import com.dybek.timeme.dto.UserDTO;
 import com.dybek.timeme.exception.KeycloakUserCreationFailedException;
+import com.dybek.timeme.exception.WorkspaceNotFoundException;
+import com.dybek.timeme.exception.WorkspaceUserNotFoundException;
 import com.dybek.timeme.service.TaskService;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,13 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Task> addTask(@Valid @RequestBody TaskDTO taskDTO) throws URISyntaxException {
-        return ResponseEntity.ok(taskService.create(taskDTO));
+    public ResponseEntity<Task> addTask(@Valid @RequestBody TaskDTO taskDTO) {
+        try {
+            return ResponseEntity.ok(taskService.create(taskDTO));
+        } catch (WorkspaceUserNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "WorkspaceUser entity was not found", e);
+        } catch (WorkspaceNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Workspace entity was not found", e);
+        }
     }
 }

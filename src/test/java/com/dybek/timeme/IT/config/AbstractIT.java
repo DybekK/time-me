@@ -1,4 +1,4 @@
-package com.dybek.timeme.IT;
+package com.dybek.timeme.IT.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariConfig;

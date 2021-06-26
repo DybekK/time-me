@@ -1,5 +1,6 @@
 package com.dybek.timeme.IT;
 
+import com.dybek.timeme.IT.config.AbstractIT;
 import com.dybek.timeme.dto.UserDTO;
 import org.junit.jupiter.api.*;
 
