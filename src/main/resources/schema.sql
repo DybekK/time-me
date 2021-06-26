@@ -1,3 +1,4 @@
+/* [jooq ignore start] */
 CREATE SCHEMA IF NOT EXISTS public;
 SET SCHEMA 'public';
 /* [jooq ignore start] */
